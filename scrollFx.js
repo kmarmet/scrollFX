@@ -16,32 +16,34 @@ const scrollFX = (function() {
       });
    }
 
-   // PUBLIC METHODS
-   const publicMethods = {
-      runFX: function() {
-         parents.forEach(function(container) {
-            if (inView(container)) {
-               let children = [].slice.call(container.querySelectorAll('[data-fx]'));
-               children.forEach(function(child) {
-                  if (inView(child)) {
-                     if (child.hasAttribute('data-fx-delay')) {
-                        let delay = parseInt(child.getAttribute('data-fx-delay')) * 1000;
+   function runFX() {
+      parents.forEach(function(container) {
+         if (inView(container)) {
+            let children = [].slice.call(container.querySelectorAll('[data-fx]'));
+            children.forEach(function(child) {
+               if (inView(child)) {
+                  if (child.hasAttribute('data-fx-delay')) {
+                     let delay = parseInt(child.getAttribute('data-fx-delay')) * 1000;
 
-                        setTimeout(function() {
-                           child.classList.add(child.getAttribute('data-fx'));
-                        }, delay);
-                     }
-                     else {
+                     setTimeout(function() {
                         child.classList.add(child.getAttribute('data-fx'));
-                     }
+                     }, delay);
                   }
-               });
-            }
-         });
-      }
-   };
-   publicMethods.runFX();
+                  else {
+                     child.classList.add(child.getAttribute('data-fx'));
+                  }
+               }
+            });
+         }
+      });
+   }
 
-   return publicMethods;
+   // Run FX on load
+   runFX();
+
+   // PUBLIC METHODS
+   return {
+      runFX: runFX
+   }
 })();
 
